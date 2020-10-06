@@ -11,25 +11,12 @@ namespace IP1.Classes
     {
         private double _CalcMSE(Image first, Image second)
         {
-            double res = 0;
-
-            byte[] firstArr = first.GetBytesBGR24().ToArray();
-            byte[] secondArr = second.GetBytesBGR24().ToArray();
-            if (firstArr.Length != secondArr.Length)
+            if (first.Height != second.Height || first.Width != second.Width)
                 throw new Exception("Images have different sizes");
-            for (int i = 0; i < firstArr.Length; i++)
-                res += Math.Abs(firstArr[i] - secondArr[i]);
-            return res /= firstArr.Length;
-            /*for (int i = 0; i < first.Height; ++i)
-            {
-                for (int j = 0; j < first.Width; ++j)
-                {
-                    res += Math.Abs(first[i, j].r - second[i, j].r);
-                    res += Math.Abs(first[i, j].g - second[i, j].g);
-                    res += Math.Abs(first[i, j].b - second[i, j].b);
-                }
-            }
-            return res /= (3 * first.Height * first.Width);*/
+            var bytesFirst = first.GetBytesBGR24();
+            var bytesSecond = second.GetBytesBGR24();
+            var different = bytesFirst.Zip(bytesSecond, (a, b) => Math.Abs(a - b));
+            return different.Sum() / different.Count();
         }
         public double CompareImage(Image first, Image second)
         {
