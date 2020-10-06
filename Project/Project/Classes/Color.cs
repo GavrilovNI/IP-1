@@ -8,16 +8,24 @@ namespace IP1
 {
     namespace Imaging
     {
-        struct Color
+        public struct Color
         {
-            private int _r;
-            private int _g;
-            private int _b;
-            public int R { get { return _r; } set { _r = (int)Utils.Clamp(_r, 0f, 255f); } }
-            public int G { get { return _g; } set { _g = (int)Utils.Clamp(_g, 0f, 255f); } }
-            public int B { get { return _b; } set { _b = (int)Utils.Clamp(_b, 0f, 255f); } }
+            public static Color White => new Color(255, 255, 255);
+            public static Color Black => new Color(0, 0, 0);
+            public static Color Red => new Color(255, 0, 0);
+            public static Color Green => new Color(0, 255, 0);
+            public static Color Blue => new Color(0, 0, 255);
+            public static Color Fuchsia => new Color(255, 0, 255);
+            public static Color Yellow => new Color(255, 255, 0);
+            public static Color Cyan => new Color(0, 255, 255);
 
-
+            public byte r, g, b;
+            public Color(byte r, byte g, byte b)
+            {
+                this.r = r;
+                this.g = g;
+                this.b = b;
+            }
 
         }
     }
