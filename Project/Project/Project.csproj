@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C3289290-CF49-4C2E-9EF5-BF2C5B5C58EA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Project</RootNamespace>
+    <RootNamespace>IP1</RootNamespace>
     <AssemblyName>Project</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
