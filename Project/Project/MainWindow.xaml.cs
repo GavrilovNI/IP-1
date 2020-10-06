@@ -24,15 +24,28 @@ namespace IP1
     {
         public MainWindow()
         {
+
             InitializeComponent();
             RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
 
             byte[] arr = new byte[3] { 1, 2, 3 };
 
             Imaging.Image myImage = new Imaging.Image(3, 2);
+
+
+
             myImage[0, 0] = Imaging.Color.Red;
-            myImage[1, 1] = Imaging.Color.Green;
-            myImage[1, 2] = Imaging.Color.Blue;
+            myImage[0, 1] = Imaging.Color.Green;
+            myImage[0, 2] = Imaging.Color.Blue;
+            myImage[1, 0] = Imaging.Color.Yellow;
+            myImage[1, 1] = Imaging.Color.Cyan;
+            myImage[1, 2] = Imaging.Color.Fuchsia;
+
+
+
+
+
+
 
 
             image.Source = Utils.ImageToBitmapSource(myImage);
