@@ -20,7 +20,11 @@ namespace IP1
             public Color this[int indexY, int indexX]
             {
                 get { return data[indexY, indexX]; }
-                set { data[indexY, indexX] = value; }
+                set {
+                    if (value == null)
+                        throw new Exception("Color can't be null");
+                    data[indexY, indexX] = value;
+                    }
             }
 
             public Image(uint sizeX, uint sizeY)
@@ -36,7 +40,7 @@ namespace IP1
             {
                 for (int y = 0; y < data.GetLength(0); y++)
                     for (int x = 0; x < data.GetLength(1); x++)
-                        data[y, x] = color;
+                        data[y, x] = new Color(color);
             }
 
             public IEnumerable<byte> GetBytesBGR24()

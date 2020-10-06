@@ -8,7 +8,7 @@ namespace IP1
 {
     namespace Imaging
     {
-        public struct Color
+        public class Color
         {
             public static Color White => new Color(255, 255, 255);
             public static Color Black => new Color(0, 0, 0);
@@ -27,6 +27,12 @@ namespace IP1
                 this.b = b;
             }
 
+            public Color(Color other)
+            {
+                this.r = other.r;
+                this.g = other.g;
+                this.b = other.b;
+            }
         }
     }
 }
