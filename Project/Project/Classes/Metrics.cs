@@ -13,7 +13,14 @@ namespace IP1.Classes
         {
             double res = 0;
 
-            for (int i = 0; i < first.Height; ++i)
+            byte[] firstArr = first.GetBytesBGR24().ToArray();
+            byte[] secondArr = second.GetBytesBGR24().ToArray();
+            if (firstArr.Length != secondArr.Length)
+                throw new Exception("Images have different sizes");
+            for (int i = 0; i < firstArr.Length; i++)
+                res += Math.Abs(firstArr[i] - secondArr[i]);
+            return res /= firstArr.Length;
+            /*for (int i = 0; i < first.Height; ++i)
             {
                 for (int j = 0; j < first.Width; ++j)
                 {
@@ -22,7 +29,7 @@ namespace IP1.Classes
                     res += Math.Abs(first[i, j].b - second[i, j].b);
                 }
             }
-            return res /= (3 * first.Height * first.Width);
+            return res /= (3 * first.Height * first.Width);*/
         }
         public double CompareImage(Image first, Image second)
         {
