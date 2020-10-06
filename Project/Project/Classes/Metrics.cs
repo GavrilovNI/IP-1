@@ -15,7 +15,7 @@ namespace IP1.Classes
 
             for (int i = 0; i < first.Height; ++i)
             {
-                for (int j = 9; j < first.Width; ++j)
+                for (int j = 0; j < first.Width; ++j)
                 {
                     res += Math.Abs(first[i, j].r - second[i, j].r);
                     res += Math.Abs(first[i, j].g - second[i, j].g);
