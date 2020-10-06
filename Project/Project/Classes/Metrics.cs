@@ -26,6 +26,8 @@ namespace IP1.Classes
         }
         public double CompareImage(Image first, Image second)
         {
+            if (first.Height != second.Height || first.Width != second.Width)
+                throw new Exception("Images have different sizes");
             return 10 * Math.Log10(255 * 255 / _CalcMSE(first, second));
         }
     }
