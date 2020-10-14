@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Color.cs" />
+    <Compile Include="Classes\Filters\Filter.cs" />
+    <Compile Include="Classes\Filters\FilterGrayScale.cs" />
+    <Compile Include="Classes\Filters\PointFilter.cs" />
     <Compile Include="Classes\Image.cs" />
     <Compile Include="Classes\Utils.cs" />
     <Compile Include="MainWindow.xaml.cs">
