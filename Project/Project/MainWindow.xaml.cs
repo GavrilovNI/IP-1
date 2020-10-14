@@ -1,4 +1,5 @@
 ﻿using IP1.Imaging;
+using IP1.Imaging.Filters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,9 +43,9 @@ namespace IP1
             myImage[1, 2] = Imaging.Color.Fuchsia;
 
 
+            myImage = Imaging.Image.Load("image");
 
-
-
+            myImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
 
 
 
