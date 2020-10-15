@@ -11,9 +11,10 @@ namespace IP1.Imaging
 {
     class ConvertOpenCV
     {
+        //convert Ip1.Imaging.Image to Mat
         public Mat ImageToMat(Image img)
         {
-            int stride = 0;
+            //int stride = 0;
             Bitmap bmp = new Bitmap(img.Width, img.Height);
             for (int y = 0; y < bmp.Height; ++y)
             {
@@ -23,7 +24,7 @@ namespace IP1.Imaging
                 }
             }
 
-            System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+            /*System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
             System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);
 
             System.Drawing.Imaging.PixelFormat pf = bmp.PixelFormat;
@@ -38,33 +39,36 @@ namespace IP1.Imaging
 
             //System.Drawing.Image<Bgra, byte> cvImage = new System.Drawing.Image<Bgra, byte>(bmp.Width, bmp.Height, stride, (IntPtr)bmpData.Scan0);
 
-            bmp.UnlockBits(bmpData);
+            bmp.UnlockBits(bmpData);*/
 
             return bmp.ToMat();
         }
 
+        //Convert to grayscale
         public System.Drawing.Image ConvertToGray(Image img)
         {
-            Mat image = ImageToMat(img);
-            Mat imageGray = image.CvtColor(ColorConversionCodes.RGB2GRAY);
+            Mat MatImage = ImageToMat(img);
+            Mat imageGray = MatImage.CvtColor(ColorConversionCodes.RGB2GRAY);
 
             return imageGray.ToBitmap();
         }
 
+        //Convert from RGB to HSV
         public System.Drawing.Image RGB2HSV(Image img)
         {
-            Mat image = ImageToMat(img);
-            Mat imageGray = image.CvtColor(ColorConversionCodes.RGB2HSV);
+            Mat MatImage = ImageToMat(img);
+            Mat imageHSV = MatImage.CvtColor(ColorConversionCodes.RGB2HSV);
 
-            return imageGray.ToBitmap();
+            return imageHSV.ToBitmap();
         }
 
+        //Convert HSV to RGB
         public System.Drawing.Image HSV2RGB(Image img)
         {
-            Mat image = ImageToMat(img);
-            Mat imageGray = image.CvtColor(ColorConversionCodes.HSV2RGB);
+            Mat MatImage = ImageToMat(img);
+            Mat imageRGB = MatImage.CvtColor(ColorConversionCodes.HSV2RGB);
 
-            return imageGray.ToBitmap();
+            return imageRGB.ToBitmap();
         }
     }
 }
