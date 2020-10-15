@@ -14,7 +14,6 @@ namespace IP1.Imaging
         //convert Ip1.Imaging.Image to Mat
         public Mat ImageToMat(Image img)
         {
-            //int stride = 0;
             Bitmap bmp = new Bitmap(img.Width, img.Height);
             for (int y = 0; y < bmp.Height; ++y)
             {
@@ -23,23 +22,6 @@ namespace IP1.Imaging
                     bmp.SetPixel(x, y, System.Drawing.Color.FromArgb(img[y, x].r, img[y, x].g, img[y, x].b));
                 }
             }
-
-            /*System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
-            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);
-
-            System.Drawing.Imaging.PixelFormat pf = bmp.PixelFormat;
-            if (pf == System.Drawing.Imaging.PixelFormat.Format32bppArgb)
-            {
-                stride = bmp.Width * 4;
-            }
-            else
-            {
-                stride = bmp.Width * 3;
-            }
-
-            //System.Drawing.Image<Bgra, byte> cvImage = new System.Drawing.Image<Bgra, byte>(bmp.Width, bmp.Height, stride, (IntPtr)bmpData.Scan0);
-
-            bmp.UnlockBits(bmpData);*/
 
             return bmp.ToMat();
         }
