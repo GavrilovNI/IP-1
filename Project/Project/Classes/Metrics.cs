@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IP1.Classes
 {
-    class Metrics
+    public class Metrics
     {
         private double _CalcMSE(Image first, Image second)
         {
