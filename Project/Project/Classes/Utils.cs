@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,17 +44,19 @@ namespace IP1
 
             public static IEnumerable<byte> GetBytesBGR24(System.Drawing.Image image)
             {
-                using (var ms = new MemoryStream())
+                /*using (var ms = new MemoryStream())
                 {
                     image.Save(ms, image.RawFormat);
                     return ms.ToArray();
-                }
+                }*/
+                ImageConverter imgCon = new ImageConverter();
+                return (byte[])imgCon.ConvertTo(image, typeof(byte[]));
             }
 
             public static BitmapImage ImageToBitmapSource(System.Drawing.Image image)
             {
                 var memory = new MemoryStream();
-                image.Save(memory, ImageFormat.Png);
+                image.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                 memory.Position = 0;
 
                 var bitmapImage = new BitmapImage();
