@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace IP1
 
             public static BitmapSource ImageToBitmapSource(IP1.Imaging.Image image)
             {
-                PixelFormat pf = PixelFormats.Bgr24;
+                System.Windows.Media.PixelFormat pf = PixelFormats.Bgr24;
                 int width = image.Width;
                 int height = image.Height;
                 int rawStride = (width * pf.BitsPerPixel + 7) / 8;
@@ -40,6 +41,29 @@ namespace IP1
                     rawImage, rawStride);
             }
 
+
+            public static IEnumerable<byte> GetBytesBGR24(System.Drawing.Image image)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    return ms.ToArray();
+                }
+            }
+
+            public static BitmapImage ImageToBitmapSource(System.Drawing.Image image)
+            {
+                var memory = new MemoryStream();
+                image.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                return bitmapImage;
+            }
         }
     }
 }
