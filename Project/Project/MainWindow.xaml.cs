@@ -123,7 +123,7 @@ namespace IP1
             Metrics mt = new Metrics();
 
             //Set result compare
-            //Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
+            Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
         }
 
         public void RunConvertRGBToHSV()
@@ -134,6 +134,7 @@ namespace IP1
             StartTime = DateTime.Now;
 
             //Custom convert RGB to HSV
+            //Заменить на перевод в HSV
             MainWindow.CustomImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
             
             EndTime = DateTime.Now;
@@ -153,7 +154,7 @@ namespace IP1
             Metrics mt = new Metrics();
 
             //Set result compare
-            //Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
+            Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
         }
 
         public void RunConvertHSVToRGB()
@@ -164,6 +165,7 @@ namespace IP1
             StartTime = DateTime.Now;
 
             //Custom convert HSV to RGB
+            //Заменить на перевод в RGB
             MainWindow.CustomImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
 
             EndTime = DateTime.Now;
@@ -183,7 +185,7 @@ namespace IP1
             Metrics mt = new Metrics();
 
             //Set result compare
-            //Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
+            Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
         }
 
         private void Convert_Click(object sender, RoutedEventArgs e)
