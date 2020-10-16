@@ -18,6 +18,11 @@
         <RadioButton x:Name="radioButtonGrayScale" Content="Оттенки серого" HorizontalAlignment="Left" Margin="610,100,0,0" GroupName ="Select" IsChecked ="True" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButtonRGB2HSV" Content="Из RGB в HSV" HorizontalAlignment="Left" Margin="610,120,0,0" GroupName ="Select" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButtonHSV2RGB" Content="Из HSV в RGB" HorizontalAlignment="Left" Margin="610,140,0,0" GroupName ="Select" VerticalAlignment="Top"/>
+        <Label x:Name="label" Content="Время работы :" HorizontalAlignment="Left" Margin="370,260,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TimeOpenCVlabel" Content="" HorizontalAlignment="Left" Margin="270,300,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label x:Name="TimeCustomlabel" Content="" HorizontalAlignment="Left" Margin="470,300,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label x:Name="label2" Content="Качество :" HorizontalAlignment="Left" Margin="310,340,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label x:Name="Qualitylabel" Content="" HorizontalAlignment="Left" Margin="380,340,0,0" VerticalAlignment="Top" Width="60"/>
 
     </Grid>
 </Window>

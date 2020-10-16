@@ -26,6 +26,9 @@ namespace IP1
     public partial class MainWindow : Window
     {
         public static Imaging.Image myImage;
+        public static Imaging.Image CustomImage;
+        public static System.Drawing.Image openCVImage;
+        public static double TimeOpenCvWork;
 
         public MainWindow()
         {
@@ -82,28 +85,105 @@ namespace IP1
             if (result == true)
             {
                 string filename = dlg.FileName;
-                //MainWindow.myImage = Imaging.Image.Load(filename);
-                Imaging.Image myImage = Imaging.Image.Load("image");
+                //MainWindow.myImage = Imaging.Image.Load(filename);!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                MainWindow.myImage = Imaging.Image.Load("image");   //!!!!!!!!!!!!!!!!!!!!!!
                 OriginalIm.Source = Utils.ImageToBitmapSource(myImage);
             }
         }
 
+        public void Clear() 
+        {
+            TimeCustomlabel.Content = "";
+            TimeOpenCVlabel.Content = "";
+            Qualitylabel.Content = "";
+        }
         public void RunConvertToGrayScale()
         {
-            //Add Timer
-            //офисная техника. Посредник
+            Clear(); //Clear labels
+            DateTime StartTime;
+            DateTime EndTime;
+            StartTime = DateTime.Now;
+            //Custom convert to grayscale
+            MainWindow.CustomImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
+            
+            EndTime = DateTime.Now;
+            //Set time
+            TimeCustomlabel.Content = EndTime.Subtract(StartTime).TotalSeconds;
+            //load result last convert on Form
+            CustomIm.Source = Utils.ImageToBitmapSource(CustomImage);
+
+            //OpenCV convert to grayscale
+            MainWindow.openCVImage = ConvertOpenCV.ConvertToGray(myImage);
+
+            //Set time 
+            TimeOpenCVlabel.Content = TimeOpenCvWork;
+
+            //load result last convert on Form
+            OpenCVIm.Source = Utils.ImageToBitmapSource(openCVImage);
+            Metrics mt = new Metrics();
+
+            //Set result compare
+            //Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
         }
 
         public void RunConvertRGBToHSV()
         {
-            //Add Timer
+            Clear(); //Clear labels
+            DateTime StartTime;
+            DateTime EndTime;
+            StartTime = DateTime.Now;
 
+            //Custom convert RGB to HSV
+            MainWindow.CustomImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
+            
+            EndTime = DateTime.Now;
+            //Set time
+            TimeCustomlabel.Content = EndTime.Subtract(StartTime).TotalSeconds;
+            //load result last convert on Form
+            CustomIm.Source = Utils.ImageToBitmapSource(CustomImage);
+
+            //OpenCV convert RGB to HSV
+            MainWindow.openCVImage = ConvertOpenCV.RGB2HSV(myImage);
+
+            //Set time 
+            TimeOpenCVlabel.Content = TimeOpenCvWork;
+
+            //load result last convert on Form
+            OpenCVIm.Source = Utils.ImageToBitmapSource(openCVImage);
+            Metrics mt = new Metrics();
+
+            //Set result compare
+            //Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
         }
 
         public void RunConvertHSVToRGB()
         {
-            //Add Timer
+            Clear(); //Clear labels
+            DateTime StartTime;
+            DateTime EndTime;
+            StartTime = DateTime.Now;
 
+            //Custom convert HSV to RGB
+            MainWindow.CustomImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
+
+            EndTime = DateTime.Now;
+            //Set time
+            TimeCustomlabel.Content = EndTime.Subtract(StartTime).TotalSeconds;
+            //load result last convert on Form
+            CustomIm.Source = Utils.ImageToBitmapSource(CustomImage);
+
+            //OpenCV convert HSV to RGB
+            MainWindow.openCVImage = ConvertOpenCV.HSV2RGB(myImage);
+
+            //Set time 
+            TimeOpenCVlabel.Content = TimeOpenCvWork;
+
+            //load result last convert on Form
+            OpenCVIm.Source = Utils.ImageToBitmapSource(openCVImage);
+            Metrics mt = new Metrics();
+
+            //Set result compare
+            //Qualitylabel.Content = mt.CompareImage(openCVImage, CustomImage);
         }
 
         private void Convert_Click(object sender, RoutedEventArgs e)

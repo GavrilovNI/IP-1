@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
-namespace IP1.Imaging
+namespace IP1
 {
     class ConvertOpenCV
     {
         //convert Ip1.Imaging.Image to Mat
-        public Mat ImageToMat(Image img)
+        public static Mat ImageToMat(IP1.Imaging.Image img)
         {
             Bitmap bmp = new Bitmap(img.Width, img.Height);
             for (int y = 0; y < bmp.Height; ++y)
@@ -27,28 +27,42 @@ namespace IP1.Imaging
         }
 
         //Convert to grayscale
-        public System.Drawing.Image ConvertToGray(Image img)
+        public static System.Drawing.Image ConvertToGray(IP1.Imaging.Image img)
         {
-            Mat MatImage = ImageToMat(img);
+            Mat MatImage = ImageToMat(img); //convert IP1.Imaging.Image to Mat
+
+            DateTime StartTime = DateTime.Now;
             Mat imageGray = MatImage.CvtColor(ColorConversionCodes.RGB2GRAY);
 
+            DateTime EndTime = DateTime.Now;
+            MainWindow.TimeOpenCvWork = EndTime.Subtract(StartTime).TotalSeconds;
             return imageGray.ToBitmap();
         }
 
         //Convert from RGB to HSV
-        public System.Drawing.Image RGB2HSV(Image img)
+        public static System.Drawing.Image RGB2HSV(IP1.Imaging.Image img)
         {
-            Mat MatImage = ImageToMat(img);
+            Mat MatImage = ImageToMat(img);//convert IP1.Imaging.Image to Mat
+
+            DateTime StartTime = DateTime.Now;
             Mat imageHSV = MatImage.CvtColor(ColorConversionCodes.RGB2HSV);
+
+            DateTime EndTime = DateTime.Now;
+            MainWindow.TimeOpenCvWork = EndTime.Subtract(StartTime).TotalSeconds;
 
             return imageHSV.ToBitmap();
         }
 
         //Convert HSV to RGB
-        public System.Drawing.Image HSV2RGB(Image img)
+        public static System.Drawing.Image HSV2RGB(IP1.Imaging.Image img)
         {
-            Mat MatImage = ImageToMat(img);
+            Mat MatImage = ImageToMat(img);//convert IP1.Imaging.Image to Mat
+
+            DateTime StartTime = DateTime.Now;
             Mat imageRGB = MatImage.CvtColor(ColorConversionCodes.HSV2RGB);
+
+            DateTime EndTime = DateTime.Now;
+            MainWindow.TimeOpenCvWork = EndTime.Subtract(StartTime).TotalSeconds;
 
             return imageRGB.ToBitmap();
         }
