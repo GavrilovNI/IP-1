@@ -9,28 +9,20 @@ namespace IP1.Imaging.Filters
 {
     public abstract class PointFilter : Filter
     {
-        public override Image<T> Run<T, Y>(Image<Y> image)
+        public override Image Run(Image image)
         {
-            Image<T> result = new Image<T>((uint)image.Width, (uint)image.Height);
+            Image result = new Image(image.Width, image.Height);
             for (int y = 0; y < image.Height; y++)
             {
                 for (int x = 0; x < image.Width; x++)
                 {
                     dynamic d = image[y, x];
-                    result[y, x] = RunColor<T>(d);
+                    result[y, x] = RunColor(d);
                     
                 }
             }
             return result;
         }
-
-        /*private IColor RunColor(object color)
-        {
-            throw new Exception("Wrong type of Color");
-        }*/
-
-        public abstract T RunColor<T>(ColorRGB color) where T: IColor;
-
-        public abstract T RunColor<T>(ColorHSV color) where T : IColor;
+        public abstract ColorRGB RunColor(ColorRGB color);
     }
 }

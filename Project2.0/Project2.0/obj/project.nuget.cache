@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "YDrHYiiOfAZI4rAPkiEcCgmTKQ7naGQOinDUBROP/fHHAfYO78YHAV4SSe2QU4TtmHqkhqdT0qb2LJlToyvmZA==",
+  "dgSpecHash": "L7nP94mPGuV2zPkQ1tr8gR+kVgK5FN/30kF4BZY3mewgrT6r8zXKtiJqbz3SnJnlQe35HQBiKt9Wvf7BBzDBKg==",
   "success": true,
-  "projectFilePath": "D:\\IP-1-code\\IP-1\\Project2.0\\Project2.0\\Project2.0.csproj",
+  "projectFilePath": "C:\\Users\\Никита\\Desktop\\IP-1-code\\Project2.0\\Project2.0\\Project2.0.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Василий\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\opencvsharp4\\4.5.0.20201013\\opencvsharp4.4.5.0.20201013.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\opencvsharp4.runtime.win\\4.5.0.20201013\\opencvsharp4.runtime.win.4.5.0.20201013.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\opencvsharp4.windows\\4.5.0.20201013\\opencvsharp4.windows.4.5.0.20201013.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
-    "C:\\Users\\Василий\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.1\\system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512"
+    "C:\\Users\\Никита\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\opencvsharp4\\4.5.0.20201013\\opencvsharp4.4.5.0.20201013.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\opencvsharp4.runtime.win\\4.5.0.20201013\\opencvsharp4.runtime.win.4.5.0.20201013.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\opencvsharp4.windows\\4.5.0.20201013\\opencvsharp4.windows.4.5.0.20201013.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\Никита\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.1\\system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512"
   ],
   "logs": []
 }

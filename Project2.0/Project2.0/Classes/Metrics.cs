@@ -11,7 +11,7 @@ namespace IP1
 {
     public class Metrics
     {
-        private double _CalcMSE<T, Y>(Image<T> first, Image<Y> second) where T : IColor where Y : IColor
+        private double _CalcMSE(Image first, Image second)
         {
             if (first.Height != second.Height || first.Width != second.Width)
                 throw new Exception("Images have different sizes");
@@ -20,7 +20,7 @@ namespace IP1
             var different = bytesFirst.Zip(bytesSecond, (a, b) => Math.Abs(a - b));
             return different.Sum() / different.Count();
         }
-        public double CompareImage<T, Y>(Image<T> first, Image<Y> second) where T : IColor where Y : IColor
+        public double CompareImage(Image first, Image second)
         {
             if (first.Height != second.Height || first.Width != second.Width)
                 throw new Exception("Images have different sizes");

@@ -23,7 +23,7 @@ namespace IP1.Imaging.Filters
             this.grayScaleType = grayScaleType;
         }
 
-        public override T RunColor<T>(ColorRGB color)
+        public override ColorRGB RunColor(ColorRGB color)
         {
             
             byte newColor;
@@ -39,14 +39,7 @@ namespace IP1.Imaging.Filters
                     throw new Exception(grayScaleType.ToString() + " is not working.");
             }
 
-            return FilterChangeColorSpace.RunColor<T>(new ColorRGB(newColor, newColor, newColor));
-        }
-        public override T RunColor<T>(ColorHSV color)
-        {
-            ColorHSV newColor = new ColorHSV(color);
-            newColor.S = 0;
-
-            return FilterChangeColorSpace.RunColor<T>(newColor);
+            return new ColorRGB(newColor, newColor, newColor);
         }
 
     }

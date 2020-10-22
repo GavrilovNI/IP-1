@@ -14,64 +14,78 @@ using IP1.Imaging.ColorNS;
 
 namespace IP1.Imaging
 {
-    public class Image<T> where T:IColor
+    public class Image
     {
-        private T[,] data;
+        private ColorRGB[,] data;
 
         public int Height => data.GetLength(0);
         public int Width => data.GetLength(1);
 
-        public T this[int indexY, int indexX]
+        public ColorRGB this[int indexY, int indexX]
         {
             get { return data[indexY, indexX]; }
             set {
                 if (value == null)
                     throw new Exception("Color can't be null");
                 data[indexY, indexX] = value;
-                }
+            }
         }
 
 
 
         public Image(uint sizeX, uint sizeY)
         {
-            data = new T[sizeY, sizeX];
+            data = new ColorRGB[sizeY, sizeX];
             for (int y = 0; y < data.GetLength(0); y++)
                 for (int x = 0; x < data.GetLength(1); x++)
-                    data[y, x] = (T)typeof(T).GetProperty("White").GetValue(null, null);
+                    data[y, x] = ColorRGB.White;
 
         }
 
-        public static explicit operator Image<T>(System.Drawing.Image image)
+        public Image(int sizeX, int sizeY)
         {
-            Image<ColorRGB> result = new Image<ColorRGB>((uint)image.Width, (uint)image.Height);
-            Bitmap bm = new Bitmap(image);
+            if (sizeX < 0 || sizeY < 0)
+                throw new Exception("Wrong image size");
+
+            data = new ColorRGB[sizeY, sizeX];
+            for (int y = 0; y < data.GetLength(0); y++)
+                for (int x = 0; x < data.GetLength(1); x++)
+                    data[y, x] = ColorRGB.White;
+
+        }
+
+        public static explicit operator Image(System.Drawing.Image image)
+        {
+            Image result = new Image(image.Width, image.Height);
             for (int y = 0; y < result.Height; y++)
+            {
                 for (int x = 0; x < result.Width; x++)
                 {
-                    System.Drawing.Color color = bm.GetPixel(x, y);
+                    System.Drawing.Color color = (image as Bitmap).GetPixel(x, y);
                     result[y, x] = new ColorRGB(color.R, color.G, color.B);
                 }
-            return new FilterChangeColorSpace().Run<T, ColorRGB>(result);
+            }
+            return result;
         }
 
-        public static implicit operator System.Drawing.Bitmap(Image<T> image)
+        public static implicit operator System.Drawing.Bitmap(Image image)
         {
-            Bitmap bm = new Bitmap(image.Width, image.Height);
+            Bitmap bitmap = new Bitmap(image.Width, image.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             for (int y = 0; y < image.Height; y++)
+            {
                 for (int x = 0; x < image.Width; x++)
                 {
-                    ColorRGB color = FilterChangeColorSpace.RunColor<ColorRGB>(image[y, x]);
-                    bm.SetPixel(x, y, System.Drawing.Color.FromArgb(color.r, color.g, color.b));
+                    bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(image[y, x].r, image[y, x].g, image[y, x].b));
                 }
-            return bm;
+            }
+            return bitmap;
         }
 
-        public void Fill(T color)
+        public void Fill(ColorRGB color)
         {
             for (int y = 0; y < data.GetLength(0); y++)
                 for (int x = 0; x < data.GetLength(1); x++)
-                    data[y, x] = (T)Activator.CreateInstance(typeof(T), color);
+                    data[y, x] = new ColorRGB(color);
         }
 
         public IEnumerable<byte> GetBytesBGR24()
@@ -80,49 +94,31 @@ namespace IP1.Imaging
             {
                 for (int x = 0; x < data.GetLength(1); x++)
                 {
-                    ColorRGB color = FilterChangeColorSpace.RunColor<ColorRGB>(data[y, x]);
-
-                    yield return color.b;
-                    yield return color.g;
-                    yield return color.r;
+                    yield return data[y,x].b;
+                    yield return data[y, x].g;
+                    yield return data[y, x].r;
                 }
             }
         }
 
         public void Save(String savePath)
         {
-            Image<ColorRGB> image = null;
-            if (typeof(T) == typeof(ColorRGB))
-            {
-                image = this as Image<ColorRGB>;
-            }
-            else if (typeof(T) == typeof(ColorHSV))
-            {
-                image = new Image<ColorRGB>((uint)this.Width, (uint)this.Height);
-                for (int i = 0; i < Width; i++)
-                    for (int j = 0; j < Height; j++)
-                        image[i, j] = new ColorRGB(data[i, j] as ColorHSV);
-                       
-
-            }
-            else
-                throw new Exception("Wrong type");
             int maxValue = 255;
             int maxLineSize = 70;
 
             using (System.IO.StreamWriter streamWriter = System.IO.File.CreateText(savePath + ".ppm"))
             {
                 streamWriter.WriteLine("P3");
-                streamWriter.WriteLine(image.Width + " " + image.Height);
+                streamWriter.WriteLine(Width + " " + Height);
                 streamWriter.WriteLine(maxValue);
 
                 String line = "";
 
-                for (int y = 0; y < image.Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
-                    for (int x = 0; x < image.Width; x++)
+                    for (int x = 0; x < Width; x++)
                     {
-                        String pixel = image[y, x].r + " " + image[y, x].g + " " + image[y, x].b;
+                        String pixel = data[y, x].r + " " + data[y, x].g + " " + data[y, x].b;
                         if (line.Length + pixel.Length + 1 > maxLineSize)
                         {
                             streamWriter.WriteLine(line);
@@ -137,13 +133,13 @@ namespace IP1.Imaging
             }
         }
 
-        public static Image<ColorRGB> Load(String savePath)
+        public static Image Load(String savePath)
         {
             string magicNumber=null;
             int? maxValue = null;
             int? width = null;
             int? height = null;
-            Image<ColorRGB> image = null;
+            Image image = null;
             byte?[] pixel = new byte?[3] { null, null, null};
             int nextPixel = 0;
 
@@ -184,7 +180,7 @@ namespace IP1.Imaging
                             else if(height==null)
                             {
                                 height = value;
-                                image = new Image<ColorRGB>((uint)width, (uint)height);
+                                image = new Image((int)width, (int)height);
                             }
                             else if (maxValue == null)
                             {

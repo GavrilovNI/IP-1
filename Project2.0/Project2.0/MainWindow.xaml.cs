@@ -1,6 +1,5 @@
 ﻿using IP1.Imaging;
 using IP1.Imaging.Filters;
-using IP1.Imaging.Filters.OpenCV;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,6 +20,7 @@ using System.Windows.Shapes;
 using IP1.Imaging.ColorNS;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using Microsoft.Win32;
 
 namespace IP1
 {
@@ -29,81 +29,70 @@ namespace IP1
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
-        public static Imaging.Image<ColorRGB> myImage;
-        public static Imaging.Image<ColorRGB> CustomImage;
-        public static System.Drawing.Image openCVImage;
-        public static double TimeOpenCvWork;
+        Imaging.Image loadedImage;
+
+        Imaging.Image result2;
+        Imaging.Image result1;
+
+        double brightnessPercent=100;
+        string brightnessPercentText="100";
 
         public MainWindow()
         {
 
             InitializeComponent();
-            RenderOptions.SetBitmapScalingMode(CustomIm, BitmapScalingMode.NearestNeighbor);
-            RenderOptions.SetBitmapScalingMode(OpenCVIm, BitmapScalingMode.NearestNeighbor);
-            RenderOptions.SetBitmapScalingMode(OriginalIm, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetBitmapScalingMode(image1, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetBitmapScalingMode(image2, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetBitmapScalingMode(imageOrig, BitmapScalingMode.NearestNeighbor);
+            Convert.IsEnabled = false;
+            ClearResults();
 
-            /*Imaging.Image myImage = Imaging.Image.Load("image");
-
-            //myImage = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run(myImage);
-
-            ConvertOpenCV opcv = new ConvertOpenCV();
-            System.Drawing.Image SecondIm = opcv.ConvertToGray(Imaging.Image.Load("image"));
-
-
-            image2.Source = Utils.ImageToBitmapSource(myImage);
-            
-            var memory = new MemoryStream();
-                SecondIm.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-            image.Source = bitmapImage;
-
-            CustomIm.Source = Utils.ImageToBitmapSource(myImage);
-            System.Drawing.Image three = opcv.RGB2HSV(Imaging.Image.Load("image"));
-
-            var memory = new MemoryStream();
-            three.Save(memory, ImageFormat.Png);
-            memory.Position = 0;
-
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = memory;
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-            OpenCVIm.Source = bitmapImage;*/
+            textBoxBrightness_TextChanged(null, null);
         }
 
         private void ButtonLoadImage_Click(object sender, RoutedEventArgs e)
         {
+            
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
             dlg.DefaultExt = ".png";
-            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg |PPM Files (*.ppm)|*.ppm";
-            Nullable<bool> result = dlg.ShowDialog();
+            dlg.Filter = "All images(.jpeg;*.jpg;*.png;*.ppm)|*.jpeg;*.jpg;*.png;*.ppm; " +
+                        "|JPEG Files (*.jpeg;*.jpg)|*.jpeg;*.jpg" +
+                        "|PNG Files (*.png)|*.png" +
+                        "|PPM Files (*.ppm)|*.ppm";
+            Nullable<bool> fileDialogResult = dlg.ShowDialog();
 
-            if (result == true)
+            if (fileDialogResult == true)
             {
+                Imaging.Image result;
                 if (dlg.FileName.Split('.').Last() == "ppm")
-                    myImage = Imaging.Image<ColorRGB>.Load(dlg.FileName.Substring(0, dlg.FileName.Length - 4));
+                    result = Imaging.Image.Load(dlg.FileName.Substring(0, dlg.FileName.Length - 4));
                 else
                 {
-                    myImage = (Image<ColorRGB>)new Bitmap(dlg.FileName);
+                    result = (Imaging.Image)new Bitmap(dlg.FileName);
                 }
 
-                OriginalIm.Source = Utils.ImageToBitmapSource(myImage);
+
+                loadedImage = result;
+                imageOrig.Source = Utils.ImageToBitmapSource(result);
+                Convert.IsEnabled = true;
+                ClearResults();
             }
         }
 
-        public void Clear() 
+        public void ClearResults()
         {
-            TimeCustomlabel.Content = "";
-            TimeOpenCVlabel.Content = "";
-            Qualitylabel.Content = "";
+            result1 = null;
+            result2 = null;
+            image1.Source = null;
+            image2.Source = null;
+
+            time1Text.Content = String.Empty;
+            time2Text.Content = String.Empty;
+            qualityNum.Content = String.Empty;
+
+            buttonSave1.IsEnabled = false;
+            buttonSave2.IsEnabled = false;
         }
 
         public double CheckTime(Action action)
@@ -113,71 +102,157 @@ namespace IP1
             return DateTime.Now.Subtract(StartTime).TotalSeconds;
         }
 
-        public void RunConvertToGrayScale()
+        public void OnFilterFinished(double time1, double time2)
         {
-            Clear(); //Clear labels
-            Image<ColorRGB> myImageRGB = null;
-            Image<ColorRGB> openCVImageRGB;
-            Mat mat = ((Bitmap)myImage).ToMat();
-            double seconds = CheckTime(() => { myImageRGB = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp).Run<ColorRGB, ColorRGB>(myImage); });
-            double seconds2 = CheckTime(() => { mat = new GrayScale().Run(mat); });
-            openCVImageRGB = (Image<ColorRGB>)mat.ToBitmap();
+            time1Text.Content = time1.ToString();
+            time2Text.Content = time2.ToString();
 
-            CustomIm.Source = Utils.ImageToBitmapSource(myImageRGB);
-            OpenCVIm.Source = Utils.ImageToBitmapSource(openCVImageRGB);
-
-            Metrics mt = new Metrics();
-            Qualitylabel.Content = mt.CompareImage(openCVImageRGB, myImageRGB);
-        }
-
-        public void RunConvertRGBToHSV()
-        {
-            Clear(); //Clear labels
-            Image<ColorHSV> myImageHSV = null;
-            Image<ColorHSV> openCVImageHSV;
-            Mat mat = ((Bitmap)myImage).ToMat();
-            double seconds = CheckTime(()=> { myImageHSV = new FilterChangeColorSpace().Run<ColorHSV, ColorRGB>(myImage); });
-            double seconds2 = CheckTime(()=> { mat = new RGB2HSV().Run(mat); });
-            openCVImageHSV = (Image<ColorHSV>)mat.ToBitmap();
             
-            CustomIm.Source = Utils.ImageToBitmapSource(myImageHSV);            
-            OpenCVIm.Source = Utils.ImageToBitmapSource(openCVImageHSV);
 
             Metrics mt = new Metrics();
-            Qualitylabel.Content = mt.CompareImage(openCVImageHSV, myImageHSV);
+            qualityNum.Content = mt.CompareImage(result2, result1);
+
+            if(radioButtonBrightness.IsChecked == true)
+            {
+                label1.Content = "Яркость:";
+                label2.Content = "Яркость через HSV:";
+            }
+            else
+            {
+                label1.Content = "Наш вариант:";
+                label2.Content = "OpenCV:";
+            }
+
+            buttonSave1.IsEnabled = true;
+            buttonSave2.IsEnabled = true;
         }
 
-        public void RunConvertHSVToRGB()
+        public void RunFilter(Filter filter, Func<Mat, Mat> openCVFilter)
         {
-            Clear(); //Clear labels
-            Image<ColorHSV> myImageHSV = new FilterChangeColorSpace().Run<ColorHSV, ColorRGB>(myImage);
-            Image<ColorRGB> myImageRGB = null;
-            Image<ColorRGB> openCVImageRGB;
-            Mat mat = ((Bitmap)myImage).ToMat();
-            double seconds = CheckTime(() => { myImageRGB = new FilterChangeColorSpace().Run<ColorRGB, ColorHSV>(myImageHSV); });
-            double seconds2 = CheckTime(() => { mat = new HSV2RGB().Run(mat); });
-            openCVImageRGB = (Image<ColorRGB>)mat.ToBitmap();
 
-            CustomIm.Source = Utils.ImageToBitmapSource(myImageRGB);
-            OpenCVIm.Source = Utils.ImageToBitmapSource(openCVImageRGB);
+            Mat mat = ((Bitmap)loadedImage).ToMat();//.CvtColor(ColorConversionCodes.RGB2BGR);
+            double timeCustom = CheckTime(() => { result1 = filter.Run(loadedImage); });
+            double timeOpenCV = CheckTime(() => { mat = openCVFilter.Invoke(mat); });
+            result2 = (Imaging.Image)mat.ToBitmap();
 
-            Metrics mt = new Metrics();
-            Qualitylabel.Content = mt.CompareImage(openCVImageRGB, myImageRGB);
+
+            OnFilterFinished(timeCustom, timeOpenCV);
+
+            imageOrig.Source = Utils.ImageToBitmapSource(loadedImage);
+            image1.Source = Utils.ImageToBitmapSource(result1);
+            image2.Source = Utils.ImageToBitmapSource(result2);
+        }
+
+        public void RunFilterBrightness()
+        {
+            Imaging.Image imageHSV;
+            Imaging.Image imageRGB;
+
+            if (checkBoxOrigHsv.IsChecked == true)
+            {
+                imageRGB = (Imaging.Image)((Bitmap)loadedImage).ToMat().CvtColor(ColorConversionCodes.HSV2BGR_FULL).ToBitmap();
+                imageHSV = loadedImage;
+            }
+            else
+            {
+
+                imageRGB = loadedImage;
+                imageHSV = (Imaging.Image)((Bitmap)loadedImage).ToMat().CvtColor(ColorConversionCodes.BGR2HSV_FULL).ToBitmap();
+            }
+
+            double timeBrightness = CheckTime(() => { result1 = new FilterBrightness(brightnessPercent).Run(imageRGB); });
+
+            double timeBrightnessHSV = CheckTime(() => { result2 = new FilterBrightnessHSV(brightnessPercent).Run(imageHSV); });
+
+            OnFilterFinished(timeBrightness, timeBrightnessHSV);
+
+            imageOrig.Source = Utils.ImageToBitmapSource(loadedImage);
+            image1.Source = Utils.ImageToBitmapSource(result1);
+            image2.Source = Utils.ImageToBitmapSource((Imaging.Image)((Bitmap)result2).ToMat().CvtColor(ColorConversionCodes.HSV2BGR_FULL).ToBitmap());
+
+            
+
         }
 
         private void Convert_Click(object sender, RoutedEventArgs e)
         {
+            Filter customFilter = null;
+            Func<Mat, Mat> openCVFilter = null;
+
             if (radioButtonGrayScale.IsChecked == true)
             {
-                RunConvertToGrayScale();
+                customFilter = new FilterGrayScale(FilterGrayScale.GrayScaleType.Gimp);
+                openCVFilter = (Mat mat) => { return mat.CvtColor(ColorConversionCodes.RGB2GRAY); };
             }
             else if (radioButtonRGB2HSV.IsChecked == true)
             {
-                RunConvertRGBToHSV();
+                
+                customFilter = new FilterBGR2HSV();
+                openCVFilter = (Mat mat) => { return mat.CvtColor(ColorConversionCodes.BGR2HSV_FULL); };
             }
             else if (radioButtonHSV2RGB.IsChecked == true)
             {
-                RunConvertHSVToRGB();
+                customFilter = new FilterHSV2BGR();
+                openCVFilter = (Mat mat) => { return mat.CvtColor(ColorConversionCodes.HSV2BGR_FULL); };
+            }
+            else if (radioButtonBrightness.IsChecked == true)
+            {
+                RunFilterBrightness();
+
+                return;
+            }
+
+            if (customFilter != null && openCVFilter != null)
+                RunFilter(customFilter, openCVFilter);
+        }
+
+        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        {
+            Imaging.Image imgToSave = null;
+            if (sender == buttonSave2)
+                imgToSave = result2;
+            else if (sender == buttonSave1)
+                imgToSave = result1;
+
+            if(result1!=null)
+            {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+                dlg.DefaultExt = ".png";
+                dlg.Filter = "All images(.jpeg;*.jpg;*.png;*.ppm)|*.jpeg;*.jpg;*.png;*.ppm; " +
+                            "|JPEG Files (*.jpeg;*.jpg)|*.jpeg;*.jpg" +
+                            "|PNG Files (*.png)|*.png" +
+                            "|PPM Files (*.ppm)|*.ppm";
+                Nullable<bool> fileDialogResult = dlg.ShowDialog();
+
+                if (fileDialogResult == true)
+                {
+
+                    ((Bitmap)imgToSave).Save(dlg.FileName);
+
+                    
+                }
+
+            }
+        }
+
+        private void textBoxBrightness_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int newBrightness;
+
+            if (int.TryParse(textBoxBrightness.Text, out newBrightness))
+            {
+                brightnessPercent = newBrightness;
+                brightnessPercentText = textBoxBrightness.Text;
+            }
+            else if (textBoxBrightness.Text == String.Empty)
+            {
+                brightnessPercent = 0;
+                brightnessPercentText = String.Empty;
+            }
+            else
+            {
+                textBoxBrightness.Text = brightnessPercentText;
             }
         }
     }

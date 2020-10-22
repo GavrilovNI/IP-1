@@ -5,24 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IP1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="820">
     <Grid>
-        <Image x:Name="CustomIm" HorizontalAlignment="Left" Height="200" Margin="410,60,0,0" VerticalAlignment="Top" Width="180"/>
-        <Image x:Name="OpenCVIm" HorizontalAlignment="Left" Height="200" Margin="210,60,0,0" VerticalAlignment="Top" Width="180"/>
-        <Image x:Name="OriginalIm" HorizontalAlignment="Left" Height="200" Margin="10,60,0,0" VerticalAlignment="Top" Width="180"/>
-        <Label x:Name="OriginalLabel" Content="Оригинал:" HorizontalAlignment="Left" Margin="65,20,0,0" VerticalAlignment="Top" Width="70"/>
-        <Label x:Name="OpenCVLabel" Content="Результат с OpenCV:" HorizontalAlignment="Left" Margin="235,20,0,0" VerticalAlignment="Top" Width="130"/>
-        <Label x:Name="CustomLabel" Content="Результат:" HorizontalAlignment="Left" Margin="465,20,0,0" VerticalAlignment="Top" Width="70"/>
+        <Image x:Name="image2" HorizontalAlignment="Left" Height="200" Margin="410,60,0,0" VerticalAlignment="Top" Width="180"/>
+        <Image x:Name="image1" HorizontalAlignment="Left" Height="200" Margin="210,60,0,0" VerticalAlignment="Top" Width="180"/>
+        <Image x:Name="imageOrig" HorizontalAlignment="Left" Height="200" Margin="10,60,0,0" VerticalAlignment="Top" Width="180"/>
+        <Label x:Name="origText" Content="Оригинал:" HorizontalAlignment="Left" Margin="65,20,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label x:Name="label1" Content="Результат 1:" HorizontalAlignment="Left" Margin="223,20,0,0" VerticalAlignment="Top" Width="142"/>
+        <Label x:Name="label2" Content="Результат 2:" HorizontalAlignment="Left" Margin="439,20,0,0" VerticalAlignment="Top" Width="125"/>
         <Button x:Name="ButtonLoadImage" Content="Загрузить изображение" HorizontalAlignment="Left" Margin="25,280,0,0" Click = "ButtonLoadImage_Click" VerticalAlignment="Top" Width="150" Height="31"/>
         <Button x:Name="Convert" Content="Конвертировать" HorizontalAlignment="Left" Margin="610,170,0,0" VerticalAlignment="Top" Width="100" Click="Convert_Click"/>
         <RadioButton x:Name="radioButtonGrayScale" Content="Оттенки серого" HorizontalAlignment="Left" Margin="610,100,0,0" GroupName ="Select" IsChecked ="True" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButtonRGB2HSV" Content="Из RGB в HSV" HorizontalAlignment="Left" Margin="610,120,0,0" GroupName ="Select" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioButtonHSV2RGB" Content="Из HSV в RGB" HorizontalAlignment="Left" Margin="610,140,0,0" GroupName ="Select" VerticalAlignment="Top"/>
-        <Label x:Name="label" Content="Время работы :" HorizontalAlignment="Left" Margin="370,260,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="TimeOpenCVlabel" Content="" HorizontalAlignment="Left" Margin="270,300,0,0" VerticalAlignment="Top" Width="60"/>
-        <Label x:Name="TimeCustomlabel" Content="" HorizontalAlignment="Left" Margin="470,300,0,0" VerticalAlignment="Top" Width="60"/>
-        <Label x:Name="label2" Content="Качество :" HorizontalAlignment="Left" Margin="310,340,0,0" VerticalAlignment="Top" Width="70"/>
-        <Label x:Name="Qualitylabel" Content="" HorizontalAlignment="Left" Margin="380,340,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label x:Name="label" Content="Время работы :" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="time1Text" Content="" HorizontalAlignment="Left" Margin="259,300,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label x:Name="time2Text" Content="" HorizontalAlignment="Left" Margin="470,300,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label x:Name="qualityText" Content="Качество :" HorizontalAlignment="Left" Margin="310,340,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label x:Name="qualityNum" Content="" HorizontalAlignment="Left" Margin="380,340,0,0" VerticalAlignment="Top" Width="60"/>
+        <Button x:Name="buttonSave1" Content="Save" HorizontalAlignment="Left" Margin="280,265,0,0" VerticalAlignment="Top" Click="buttonSave_Click"/>
+        <Button x:Name="buttonSave2" Content="Save" HorizontalAlignment="Left" Margin="486,265,0,0" VerticalAlignment="Top" Click="buttonSave_Click"/>
+        <RadioButton x:Name="radioButtonBrightness" Content="Яркость" HorizontalAlignment="Left" Margin="610,80,0,0" GroupName ="Select" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxBrightness" HorizontalAlignment="Left" Margin="678,80,0,0" Text="100" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="textBoxBrightness_TextChanged"/>
+        <CheckBox x:Name="checkBoxOrigHsv" Content="Orig HSV" HorizontalAlignment="Left" Margin="733,80,0,0" VerticalAlignment="Top" Height="15" Width="77" FontSize="10"/>
 
     </Grid>
 </Window>

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 namespace IP1.Imaging.ColorNS
 {
     
-        public class ColorRGB:IColor
+        public class ColorRGB
         {
-            public static IColor White => new ColorRGB(255, 255, 255);
-            public static IColor Black => new ColorRGB(0, 0, 0);
-            public static IColor Red => new ColorRGB(255, 0, 0);
-            public static IColor Green => new ColorRGB(0, 255, 0);
-            public static IColor Blue => new ColorRGB(0, 0, 255);
-            public static IColor Magenta => new ColorRGB(255, 0, 255);
-            public static IColor Yellow => new ColorRGB(255, 255, 0);
-            public static IColor Cyan => new ColorRGB(0, 255, 255);
+            public static ColorRGB White => new ColorRGB(255, 255, 255);
+            public static ColorRGB Black => new ColorRGB(0, 0, 0);
+            public static ColorRGB Red => new ColorRGB(255, 0, 0);
+            public static ColorRGB Green => new ColorRGB(0, 255, 0);
+            public static ColorRGB Blue => new ColorRGB(0, 0, 255);
+            public static ColorRGB Magenta => new ColorRGB(255, 0, 255);
+            public static ColorRGB Yellow => new ColorRGB(255, 255, 0);
+            public static ColorRGB Cyan => new ColorRGB(0, 255, 255);
 
             public byte r, g, b;
             public ColorRGB(byte r, byte g, byte b)
@@ -24,42 +24,6 @@ namespace IP1.Imaging.ColorNS
                 this.r = r;
                 this.g = g;
                 this.b = b;
-            }
-
-            public ColorRGB(ColorHSV col)
-            {
-                int ii;
-                double fract;
-                double c1, c2, c3;
-                double red = 0.0, green = 0.0, blue = 0.0;
-                if (col.S == 0)
-                    red = green = blue = col.V;
-                else
-                {
-                    col.H /= 60;
-                    ii = (int)Math.Floor((decimal)col.H);
-                    fract = col.H - ii;
-
-                    c1 = col.V * col.S;
-                    c2 = c1 * (1 - Math.Abs(col.H % 2 - 1));
-                    c3 = col.V - c1;
-
-                    double[,] newValues = new double[6, 3] {{ c1, c2, 0 },
-                                                            { c2, c1, 0 },
-                                                            { 0, c1, c2 },
-                                                            { 0, c2, c1 },
-                                                            { c2, 0, c1 },
-                                                            { c1, 0, c2 }};
-
-
-                    red = newValues[ii, 0] + c3;
-                    green = newValues[ii, 1] + c3;
-                    blue = newValues[ii, 2] + c3;
-                }
-
-                r = (byte)Math.Round(red * 255);
-                g = (byte)Math.Round(green * 255);
-                b = (byte)Math.Round(blue * 255);
             }
 
             public ColorRGB(ColorRGB other)

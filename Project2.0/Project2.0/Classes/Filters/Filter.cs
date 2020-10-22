@@ -9,6 +9,6 @@ namespace IP1.Imaging.Filters
 {
     public abstract class Filter
     {
-        public abstract Image<T> Run<T, Y>(Image<Y> image ) where T: IColor where Y: IColor;
+        public abstract Image Run(Image image);
     }
 }

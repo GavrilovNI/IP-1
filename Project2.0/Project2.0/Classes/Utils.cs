@@ -27,9 +27,7 @@ namespace IP1
                 return value;
             }
 
-            
-
-            public static BitmapSource ImageToBitmapSource(IP1.Imaging.Image<ColorRGB> image)
+            public static BitmapSource ImageToBitmapSource(IP1.Imaging.Image image)
             {
                 System.Windows.Media.PixelFormat pf = PixelFormats.Bgr24;
                 int width = image.Width;
@@ -42,20 +40,42 @@ namespace IP1
                     rawImage, rawStride);
             }
 
-
-
-            public static IEnumerable<byte> GetBytesBGR24(System.Drawing.Image image)
+            public static BitmapSource BitmapToBitmapSource(System.Drawing.Bitmap bitmap)
             {
-                /*using (var ms = new MemoryStream())
-                {
-                    image.Save(ms, image.RawFormat);
-                    return ms.ToArray();
-                }*/
-                ImageConverter imgCon = new ImageConverter();
-                return (byte[])imgCon.ConvertTo(image, typeof(byte[]));
+                var bitmapData = bitmap.LockBits(
+                    new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                    System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+                var bitmapSource = BitmapSource.Create(
+                    bitmapData.Width, bitmapData.Height,
+                    bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                    PixelFormats.Bgr24, null,
+                    bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+                bitmap.UnlockBits(bitmapData);
+                return bitmapSource;
             }
 
-            public static BitmapImage ImageToBitmapSource(System.Drawing.Image image)
+            /*public static Bitmap BitmapSourceToBitmap(BitmapSource source)
+            {
+                Bitmap bmp = new Bitmap(
+                  source.PixelWidth,
+                  source.PixelHeight,
+                  PixelFormats.Format32bppPArgb);
+                BitmapData data = bmp.LockBits(
+                  new Rectangle(Point.Empty, bmp.Size),
+                  ImageLockMode.WriteOnly,
+                  PixelFormat.Format32bppPArgb);
+                source.CopyPixels(
+                  Int32Rect.Empty,
+                  data.Scan0,
+                  data.Height * data.Stride,
+                  data.Stride);
+                bmp.UnlockBits(data);
+                return bmp;
+            }*/
+
+            /*public static BitmapImage ImageToBitmapSource(System.Drawing.Image image)
             {
                 var memory = new MemoryStream();
                 image.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
@@ -67,7 +87,7 @@ namespace IP1
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.EndInit();
                 return bitmapImage;
-            }
+            }*/
         }
     }
 }
